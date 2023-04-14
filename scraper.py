@@ -109,7 +109,7 @@ def scrape_buscape_products(url, type):
 
     list_of_products_data = []
 
-    for product in result[:6:
+    for product in result[:6]:
         product_dict = {
             "website": "Busca Pé",
             "product_type": type,
