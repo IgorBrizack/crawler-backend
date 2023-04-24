@@ -6,7 +6,7 @@ from scraper import manage_scrape
 
 # "mongodb://crawler_web_db:27017" URL for container development
 
-MONGO_DETAILS = 'mongodb://mongo:RTtLZhSiiRjxUgNOzxBt@containers-us-west-56.railway.app:5548'
+MONGO_DETAILS = 'mongodb://mongo:TrUj0l1LilHmLtcxnCUD@containers-us-west-137.railway.app:5845'
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
