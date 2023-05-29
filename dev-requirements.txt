@@ -12,5 +12,5 @@ beautifulsoup4==4.11.2
 fastapi==0.95.0
 pydantic[email]
 motor==3.1.2
-python-dotenv==1.0.0
+python-dotenv==0.10.4
 uvicorn
