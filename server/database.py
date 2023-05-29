@@ -26,10 +26,11 @@ async def add_product(website: str, product: str):
 
     await products_collection.insert_many(scrape_data)
     new_products = products_collection.find({"website": website_helper[website], "product_type": product})
+    new_products = list(new_products)
 
     products_list = []
 
-    for prod in await new_products.to_list(length=1000):
+    for prod in await new_products:
         products_list.append({
             "id": str(prod["_id"]),
             "product_type": str(prod["product_type"]),
@@ -46,7 +47,8 @@ async def add_product(website: str, product: str):
 async def get_products(website: str, product: str):
     products_data = products_collection.find({"website": website_helper[website], "product_type": product})
 
-    products_data_result = await products_data.to_list(length=1000)
+    products_data_result = await products_data
+    products_data_result = list(products_data_result)
 
     if not products_data_result:
         data = await add_product(website, product)
