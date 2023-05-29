@@ -22,8 +22,7 @@ async def add_products_data(product: ProductSchema = Body(...)):
     return ResponseModel(new_products, "Student added successfully")
 
 
-@router.post("/get_products", response_description="Search for Products")
-async def get_products_data(product: ProductSchema = Body(...)):
-    products =  jsonable_encoder(product)
-    data_products = await get_products(products["website"], products['product_type'])
+@router.get("/get_products/{website}/{product_type}", response_description="Search for Products")
+async def get_products_data(website: str, product_type: str):
+    data_products = await get_products(website, product_type)
     return ResponseModel(data_products, "Get products succesfully")
