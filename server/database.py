@@ -1,20 +1,19 @@
 # biblioteca para lidar com chamadas asyncronas no mongo
 import os
 import motor.motor_asyncio
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 
 from scraper import manage_scrape
 
 # "mongodb://crawler_web_db:27017" URL for container development
+# os.environ.get('MONGO_URL')
 
-MONGO_DETAILS = 'mongodb+srv://igorbrizack:dHCskKxk02AvRCoJ@cluster0.z596ana.mongodb.net/?retryWrites=true&w=majority'
+MONGO_DETAILS = 'mongodb://crawler_web_db:27017'
 
-client = MongoClient(MONGO_DETAILS, server_api=ServerApi('1'))
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
 database_products = client.products
 
-products_collection = database_products.products_collection
+products_collection = database_products.get_collection("products_collection")
 
 website_helper = {
         "mercadolivre": 'Mercado Livre',
@@ -26,11 +25,10 @@ async def add_product(website: str, product: str):
 
     await products_collection.insert_many(scrape_data)
     new_products = products_collection.find({"website": website_helper[website], "product_type": product})
-    new_products = list(new_products)
 
     products_list = []
 
-    for prod in await new_products:
+    for prod in await new_products.to_list(length=1000):
         products_list.append({
             "id": str(prod["_id"]),
             "product_type": str(prod["product_type"]),
@@ -46,10 +44,11 @@ async def add_product(website: str, product: str):
 
 async def get_products(website: str, product: str):
     products_data = products_collection.find({"website": website_helper[website], "product_type": product})
-    products_data_result = list(products_data)
+
+    products_data_result = await products_data.to_list(length=1000)
 
     if not products_data_result:
-        data = add_product(website, product)
+        data = await add_product(website, product)
         return data
     
     products_list = []
