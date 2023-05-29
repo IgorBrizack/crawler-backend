@@ -1,18 +1,20 @@
 # biblioteca para lidar com chamadas asyncronas no mongo
 import os
 import motor.motor_asyncio
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 from scraper import manage_scrape
 
 # "mongodb://crawler_web_db:27017" URL for container development
 
-MONGO_DETAILS = 'mongodb://igorbrizack:dHCskKxk02AvRCoJ@cluster0.z596ana.mongodb.net/?retryWrites=true&w=majority'
+MONGO_DETAILS = 'mongodb+srv://igorbrizack:dHCskKxk02AvRCoJ@cluster0.z596ana.mongodb.net/?retryWrites=true&w=majority'
 
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+client = MongoClient(MONGO_DETAILS, server_api=ServerApi('1'))
 
 database_products = client.products
 
-products_collection = database_products.get_collection("products_collection")
+products_collection = database_products.products_collection
 
 website_helper = {
         "mercadolivre": 'Mercado Livre',
