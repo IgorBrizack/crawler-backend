@@ -46,9 +46,7 @@ async def add_product(website: str, product: str):
 
 async def get_products(website: str, product: str):
     products_data = products_collection.find({"website": website_helper[website], "product_type": product})
-
-    products_data_result = await products_data
-    products_data_result = list(products_data_result)
+    products_data_result = list(products_data)
 
     if not products_data_result:
         data = await add_product(website, product)
