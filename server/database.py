@@ -49,7 +49,7 @@ async def get_products(website: str, product: str):
     products_data_result = list(products_data)
 
     if not products_data_result:
-        data = await add_product(website, product)
+        data = add_product(website, product)
         return data
     
     products_list = []
